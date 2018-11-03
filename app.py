@@ -38,6 +38,7 @@ def webhook():
 		print(req)
 	else:
 		abort(400)
+	return
 
 
 @app.route('/')
