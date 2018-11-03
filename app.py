@@ -42,7 +42,7 @@ def webhook():
 	template_data = {
 		'result' : req
 	}
-	return flask.render_template("index.html", template_data)
+	return flask.render_template("index.html", **template_data)
 
 @app.route('/')
 def main():
