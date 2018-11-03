@@ -38,7 +38,7 @@ def webhook():
 		print(req)
 	else:
 		abort(400)
-		
+
 	template_data = {
 		'result' : req
 	}
@@ -46,7 +46,7 @@ def webhook():
 
 @app.route('/')
 def main():
-	return flask.render_template("index.html", template_data)
+	return flask.render_template("index.html")
 
 if __name__=='__main__':
 	app.debug=True
