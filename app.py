@@ -5,15 +5,20 @@ import paypalrestsdk
 from paypalrestsdk import Webhook
 import numpy as np
 import matplotlib.pyplot as plt
+from flask import Flask, request, render_template, redirect, jsonify, abort, url_for, make_response
+import requests
+# import firebase_admin
+from firebase_admin import db, initialize_app
+
 
 paypalrestsdk.configure({
 	'mode': 'sandbox', #sandbox or live
-  	'client_id': 'ATbI73Ar9lZ6oeQEcjh-KPV9Zbe1q_x8k3A_CoV7liqZgI2lknrW5ZawTZnDhDRwc5L1eQNi0d8NHnCg',
-  	'client_secret': 'EM764Y5eYv8WM1dVs-z8lgqN2AQcmq_13BjuHVWhHr80bHxSLtVqBx7h9WWCHE8tIFa0_89DwG9kfWZ5' 
+  	'client_id': 'Aa0VFBzKjKzgdI-kZwHEkLv5aOmy9yBJ8tqHSH2ElzKWXFtZ-btg9ADqaw4nFwgPQAEHa88pNe4FeUtI',
+  	'client_secret': 'EI-dMlYlcd7Zykf4vJRpizh-a2EnpfVxdFBl4EbzzHYxa9qP8LkwKwOoReBofFWvpSn6w02sBCLFPhPY' 
 })
 
 webhook = Webhook({
-	"url": "https://budget-track.herokuapp.com/",
+	"url": "https://budget-track.herokuapp.com/webhhook",
 	"event_types": [{
 	"name": "PAYMENT.SALE.COMPLETED"
 	},{
@@ -40,82 +45,101 @@ if webhook.create():
 else:
 	print(webhook.error)
 
-speant = 0
-budget = 0
-
 app = Flask(__name__)
+
+initialize_app(options={
+    'databaseURL': 'https://budget-data-d6bdc.firebaseio.com'
+})
+USERS = db.reference('budget-node')
+
+@app.route('/index', methods =['POST'])
+def create_user():
+    req = request.form.to_dict() 
+    new_user = USERS.push(req)
+    user_id = new_user.key
+    print('[INFO] User ID: ', user_id)
+    user_details = _ensure_user(user_id)
+    print('[INFO] User Info: ', user_details) # read_user(user_id).json)
+    return render_template("index.html", user=user_details) 
+
+@app.route('/users/<id>')
+def read_user(id):
+    return jsonify(_ensure_user(id))
+
+@app.route('/users/<id>', methods=['PUT'])
+def update_user(id):
+    _ensure_user(id)
+    req = request.json
+    USERS.child(id).update(req)
+    return jsonify({'success': True})
+
+def _ensure_user(id):
+    user = USERS.child(id).get()
+    if not user:
+        abort(404)
+    return user
+
+@app.route('/users/<id>', methods=['DELETE'])
+def delete_user(id):
+    _ensure_user(id)
+    USERS.child(id).delete()
+    return jsonify({'success': True})
+
+
+@app.route('/users', methods=['POST'])
+# def create_user():
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
-		print("Request:")
-		print(req)
-		print(req['id'])
 		sale_id = req['id']
-		print(req['create_time'])
 		time = req['create_time']
-		print(req['resource']['amount']['total'])
 		amount = req['resource']['amount']['total']
-		print(req['resource']['parent_payment'])
 		payment_id = req['resource']['parent_payment']
-		print(req['resource']['links'][2]['href'])
 		payment_url = req['resource']['links'][2]['href']
 
-		N = 1
-		global speant 
-		speant -= float(amount)
-		global budget
-		remaining = budget - speant
+		transaction = {
+			'date': time,
+			'amount': amount,
+			'category': 'random'
+		}
 
-		print(budget)
-		print(speant)
-		print(remaining)
+		# db[id][transaction].append(transaction)
+		# db[id][spent]+=transation[amount]
+		# N = 1
+		# global speant 
+		# speant -= float(amount)
+		# global budget
+		# remaining = budget - speant
 
-		ind = np.arange(N)    # the x locations for the groups
-		width = 0.15       # the width of the bars: can also be len(x) sequence
+		# ind = np.arange(N)    # the x locations for the groups
+		# width = 0.15       # the width of the bars: can also be len(x) sequence
 
-		p1 = plt.bar(ind, remaining, width, color='#d62728')
-		p2 = plt.bar(ind, speant, width,
-		             bottom=remaining)
+		# p1 = plt.bar(ind, remaining, width, color='#d62728')
+		# p2 = plt.bar(ind, speant, width,
+		#              bottom=remaining)
 
-		plt.ylabel('Amount')
-		plt.title('Rremaining in budget')
-		plt.xticks(ind, ('Budget'))
-		plt.yticks(np.arange(0, 101, 10))
-		plt.legend((p1[0], p2[0]), ('Remaining', 'Speant'))
+		# plt.ylabel('Amount')
+		# plt.title('Rremaining in budget')
+		# plt.xticks(ind, ('Budget'))
+		# plt.yticks(np.arange(0, 101, 10))
+		# plt.legend((p1[0], p2[0]), ('Remaining', 'Speant'))
 
-		fig = plt.gcf()
-		plt.show()
-		fig.savefig('img.png')
+		# fig = plt.gcf()
+		# plt.show()
+		# fig.savefig('img.png')
 
 
 	else:
 		abort(400)
 
 
-	# template_data = {
-	# 	'result' : req
-	# }
-	return flask.render_template("budget.html")
-
-@app.route('/', methods=['POST'])
-def form_input():
-	if request.method == 'POST':
-		name = request.form['name']
-		global budget
-		budget = request.form['budget']
-		template_data = {
-			'name': name,
-			'budget': budget
-		}
-		return flask.render_template("budget.html", **template_data)
 
 @app.route('/')
 def main():
-	return flask.render_template("index.html")
+    return render_template("user.html")
 
 if __name__=='__main__':
-	app.debug=True
-	app.run()
-
+    app.debug=True
+    app.run()

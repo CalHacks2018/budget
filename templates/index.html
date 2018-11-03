@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 
+<<<<<<< HEAD
 <head>
 	<title>Budget Tracker</title>
 </head>
@@ -11,5 +11,20 @@
 		Weekly Budget:
 		<input name="budget"><br><br>
 		<input type="submit" value="Submit">
+=======
+<h1> Welcome {{user.name}}! </h1>
+
+<body>
+Here's your budget: {{user.budget}}
+ 
+	<h2> Add Transaction </h2>
+
+	<form action="{{ url_for('create_user') }}" method="post">
+		Category: <input name="type" type="text">
+		<br>
+		Amount: <input name="amount" type="text">
+		<br>
+	    <input id="my_submit" type="submit" value="Submit">
+>>>>>>> 57293bb2768d7a378a3c642f248a2ee3d8451c9c
 	</form>
 </body>
