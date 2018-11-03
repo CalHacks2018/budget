@@ -47,7 +47,7 @@ def webhook():
 		print("Request:")
 		print(req['id'])
 		print(req['create_time'])
-		print(req['amount'])
+		print(req['amount']['total'])
 		print(req['parent_payment'])
 	else:
 		abort(400)
