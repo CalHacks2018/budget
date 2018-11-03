@@ -139,7 +139,7 @@ def webhook():
 
 	else:
 		abort(400)
-		return render_template("new_user.html")
+	return render_template("new_user.html")
 
 
 @app.route('/')
