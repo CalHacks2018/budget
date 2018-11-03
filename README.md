@@ -6,7 +6,11 @@ export FLASK_APP=app.py
 flask run
 ```
 
+pip install requests --upgrade
+
 ## Backend API Documentation
+
+https://stackoverflow.com/questions/42182389/how-to-remove-all-data-from-a-firebase-database
 
 curl -v -X POST -d @spiderman.json -H "Content-type: application/json" http://localhost:5000/users
 
