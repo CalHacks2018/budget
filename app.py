@@ -41,8 +41,7 @@ else:
 	print(webhook.error)
 
 speant = 0
-total_budget = 0
-remaining = 0
+budget = 0
 
 app = Flask(__name__)
 
@@ -104,7 +103,8 @@ def webhook():
 def form_input():
 	if request.method == 'POST':
 		name = request.form['name']
-		global budget = request.form['budget']
+		global budget
+		budget = request.form['budget']
 		template_data = {
 			'name': name,
 			'budget': budget
