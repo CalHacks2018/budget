@@ -64,7 +64,9 @@ def webhook():
 		payment_url = req['resource']['links'][2]['href']
 
 		N = 1
+		global speant 
 		speant -= amount
+		global budget
 		remaining = budget - speant
 
 		print(budget)
@@ -102,7 +104,7 @@ def webhook():
 def form_input():
 	if request.method == 'POST':
 		name = request.form['name']
-		budget = request.form['budget']
+		global budget = request.form['budget']
 		template_data = {
 			'name': name,
 			'budget': budget
