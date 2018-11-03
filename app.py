@@ -33,8 +33,8 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
 	if request.method == 'POST':
-		print(result)
-		print(jsonify(result))
+		print(request)
+		print(jsonify(request))
 	else:
 		abort(400)
 
