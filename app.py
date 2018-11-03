@@ -1,5 +1,5 @@
 import flask 
-from flask import Flask, request, render_template 
+from flask import Flask, request, render_template, jsonify
 import requests
 import paypalrestsdk 
 from paypalrestsdk import Webhook
@@ -33,8 +33,8 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
 	if request.method == 'POST':
-		result = request.json()
 		print(result)
+		print(jsonify(result))
 	else:
 		abort(400)
 
