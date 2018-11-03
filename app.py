@@ -19,11 +19,11 @@ def create_hero():
     req = request.form.to_dict() 
     new_user = USERS.push(req)
     # print('[INFO]: ', new_user.name)
-    return redirect("index.html") 
+    return render_template("index.html") 
     # redirect(url_for('read_hero'))
     # flask.jsonify({'id': hero.key}), 201 
 
-@app.route('/heroes', methods=['POST'])
+@app.route('/users', methods=['POST'])
 # def create_hero():
 #     # print('[INFO]: ', request.form)
 #     print('[INFO]: ', request.form['amount'])
@@ -33,30 +33,30 @@ def create_hero():
 #     hero = USERS.push(req)
 #     return flask.jsonify({'id': hero.key}), 201
 
-@app.route('/heroes/<id>')
-def read_hero(id):
-    return jsonify(_ensure_hero(id))
+@app.route('/users/<id>')
+def read_user(id):
+    return jsonify(_ensure_user(id))
 
-@app.route('/heroes/<id>', methods=['PUT'])
-def update_hero(id):
-    _ensure_hero(id)
+@app.route('/users/<id>', methods=['PUT'])
+def update_user(id):
+    _ensure_user(id)
     req = request.json
 
 
     USERS.child(id).update(req)
     return jsonify({'success': True})
 
-@app.route('/heroes/<id>', methods=['DELETE'])
-def delete_hero(id):
-    _ensure_hero(id)
+@app.route('/users/<id>', methods=['DELETE'])
+def delete_user(id):
+    _ensure_user(id)
     USERS.child(id).delete()
     return jsonify({'success': True})
 
-def _ensure_hero(id):
-    hero = USERS.child(id).get()
-    if not hero:
+def _ensure_user(id):
+    user = USERS.child(id).get()
+    if not user:
         abort(404)
-    return hero
+    return user
 
 @app.route('/')
 def main():

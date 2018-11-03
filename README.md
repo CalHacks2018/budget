@@ -8,6 +8,8 @@ flask run
 
 ## Backend API Documentation
 
-curl -v -X POST -d @spiderman.json -H "Content-type: application/json" http://localhost:5000/heroes
+curl -v -X POST -d @spiderman.json -H "Content-type: application/json" http://localhost:5000/users
 
-curl -X DELETE http://localhost:5000/heroes/-LQPmgZKkEAJc1fcqBeu
+curl -X DELETE http://localhost:5000/users/-LQPmgZKkEAJc1fcqBeu
+
+curl -X GET http://localhost:5000/users/-LQPpHScPn_cmPQcd8Mw
