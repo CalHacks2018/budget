@@ -9,8 +9,6 @@ from flask import Flask, request, render_template, redirect, jsonify, abort, url
 import requests
 from firebase_admin import db, initialize_app
 
-export GOOGLE_APPLICATION_CREDENTIALS=budget-data-d6bdc-firebase-adminsdk-bu5t8-383b28eb2d.json
-
 paypalrestsdk.configure({
 	'mode': 'sandbox', #sandbox or live
   	'client_id': 'Aa0VFBzKjKzgdI-kZwHEkLv5aOmy9yBJ8tqHSH2ElzKWXFtZ-btg9ADqaw4nFwgPQAEHa88pNe4FeUtI',
