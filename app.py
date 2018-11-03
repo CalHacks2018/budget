@@ -64,7 +64,7 @@ def webhook():
 
 		N = 1
 		global speant 
-		speant -= amount
+		speant -= int(amount)
 		global budget
 		remaining = budget - speant
 
