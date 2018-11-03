@@ -11,27 +11,17 @@ firebase_admin.initialize_app(options={
 })
 USERS = db.reference('budget-node')
 
-@app.route('/login', methods =['POST'])
-def create_hero():
+@app.route('/index', methods =['POST'])
+def create_user():
     # print('[INFO]: ', request.form['name'])
     # print('[INFO]: ', request.form['budget'])
     # print('[INFO]: ', request.form.to_dict())
     req = request.form.to_dict() 
     new_user = USERS.push(req)
-    # print('[INFO]: ', new_user.name)
+    print('[INFO]: ', new_user.key)
     return render_template("index.html") 
-    # redirect(url_for('read_hero'))
+    # redirect(url_for('read_user'))
     # flask.jsonify({'id': hero.key}), 201 
-
-@app.route('/users', methods=['POST'])
-# def create_hero():
-#     # print('[INFO]: ', request.form)
-#     print('[INFO]: ', request.form['amount'])
-#     print('[INFO]: ', request.form['type'])
-#     print('[INFO]: ', request.form.to_dict())
-#     req = request.form.to_dict() # flask.request.json
-#     hero = USERS.push(req)
-#     return flask.jsonify({'id': hero.key}), 201
 
 @app.route('/users/<id>')
 def read_user(id):
@@ -41,15 +31,7 @@ def read_user(id):
 def update_user(id):
     _ensure_user(id)
     req = request.json
-
-
     USERS.child(id).update(req)
-    return jsonify({'success': True})
-
-@app.route('/users/<id>', methods=['DELETE'])
-def delete_user(id):
-    _ensure_user(id)
-    USERS.child(id).delete()
     return jsonify({'success': True})
 
 def _ensure_user(id):
@@ -58,9 +40,19 @@ def _ensure_user(id):
         abort(404)
     return user
 
+@app.route('/users/<id>', methods=['DELETE'])
+def delete_user(id):
+    _ensure_user(id)
+    USERS.child(id).delete()
+    return jsonify({'success': True})
+
+
+@app.route('/users', methods=['POST'])
+# def create_user():
+
 @app.route('/')
 def main():
-    return render_template("login.html")
+    return render_template("user.html")
 
 if __name__=='__main__':
     app.debug=True
