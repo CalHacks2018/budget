@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 
 @app.route('/')
-def main();
+def main():
 	return flask.render_tamplate("index.html")
 
 if __name__=='__main__':
