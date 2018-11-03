@@ -1,5 +1,5 @@
 import flask 
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, url_for, request, render_template, jsonify
 import requests
 import paypalrestsdk 
 from paypalrestsdk import Webhook
@@ -13,7 +13,7 @@ paypalrestsdk.configure({
 webhook = Webhook({
 	"url": "https://budget-track.herokuapp.com/",
 	"event_types": [{
-	"name": "PAYMENT.SALE.CREATED"
+	"name": "PAYMENT.SALE.COMPLETED"
 	},{
 	"name": "PAYMENT.SALE.DENIED"
  	},{
@@ -35,14 +35,27 @@ def webhook():
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
 		print("Request:")
-		print(req)
+		print(req['parent_payment'])
+
+
 	else:
 		abort(400)
 
 	template_data = {
 		'result' : req
 	}
-	return flask.render_template("index.html", **template_data)
+	return flask.render_template("budget.html", **template_data)
+
+@app.route('/', methods=['POST'])
+def form_input():
+	if request.method == 'POST':
+		name = request.form['name']
+		budget = request.form['budget']
+		template_data = {
+			'name': name,
+			'budget': budget
+		}
+		return flask.render_template("budget.html", **template_data)
 
 @app.route('/')
 def main():
