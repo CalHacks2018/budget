@@ -6,8 +6,8 @@ export FLASK_APP=app.py
 flask run
 ```
 
-## Backend API Doc
+## Backend API Documentation
 
 curl -v -X POST -d @spiderman.json -H "Content-type: application/json" http://localhost:5000/heroes
 
-curl -X DELETE http://localhost:5000/heroes/-LQNfxvlYuLEj8QIGU3A
+curl -X DELETE http://localhost:5000/heroes/-LQPmgZKkEAJc1fcqBeu
