@@ -17,9 +17,19 @@ webhook = Webhook({
 	},{
 	"name": "PAYMENT.SALE.DENIED"
  	},{
+ 	"name": "PAYMENT.SALE.REFUNDED"
+ 	},{
+ 	"name": "PAYMENT.SALE.REVERSED"
+ 	},{
+ 	"name": "PAYMENT.SALE.PENDING"
+ 	},{
  	"name": "PAYMENT.AUTHORIZATION.CREATED"
  	},{
  	"name": "PAYMENT.AUTHORIZATION.VOIDED"
+ 	},{
+ 	"name": "PAYMENT.ORDER.CANCELLED"
+ 	},{
+ 	"name": "PAYMENT.ORDER.CREATED"
  	}]
  })
 
@@ -35,15 +45,16 @@ def webhook():
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
 		print("Request:")
+		print(req['id'])
+		print(req['create_time'])
+		print(req['amount'])
 		print(req['parent_payment'])
-
-
 	else:
 		abort(400)
 
-	template_data = {
-		'result' : req
-	}
+	# template_data = {
+	# 	'result' : req
+	# }
 	return flask.render_template("budget.html", **template_data)
 
 @app.route('/', methods=['POST'])
