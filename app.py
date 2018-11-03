@@ -47,10 +47,18 @@ def webhook():
 		print("Request:")
 		print(req)
 		print(req['id'])
+		sale_id = req['id']
 		print(req['create_time'])
+		time = req['create_time']
 		print(req['resource']['amount']['total'])
+		amout = req['resource']['amount']['total']
 		print(req['resource']['parent_payment'])
+		payment_id = req['resource']['parent_payment']
 		print(req['resource']['links'][2]['href'])
+		payment_url = req['resource']['links'][2]['href']
+
+		r = requests.get(payment_url)
+		print(r.json())
 	else:
 		abort(400)
 
