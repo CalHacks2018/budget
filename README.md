@@ -1,7 +1,7 @@
 # budget
 
 ```
-export GOOGLE_APPLICATION_CREDENTIALS=../budget-data-d6bdc-firebase-adminsdk-bu5t8-383b28eb2d.json
+export GOOGLE_APPLICATION_CREDENTIALS=budget-data-d6bdc-firebase-adminsdk-bu5t8-383b28eb2d.json
 export FLASK_APP=app.py
 flask run
 ```

@@ -1,0 +1,17 @@
+
+<h1> Welcome {{user.name}}! </h1>
+
+<body>
+Here's your budget: {{user.budget}}
+<br>
+
+Here are transactions: {{user.transactions}}
+ 
+	<h2> Add Transaction </h2>
+
+	<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
+		Category: <input name="type" type="text"> <br>
+		Amount: <input name="amount" type="text"> <br>
+	    <input type="submit" value="Submit">
+	</form>
+</body>
