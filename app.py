@@ -45,10 +45,12 @@ def webhook():
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
 		print("Request:")
+		print(req)
 		print(req['id'])
 		print(req['create_time'])
-		print(req['amount']['total'])
+		#print(req['amount']['total'])
 		print(req['parent_payment'])
+
 	else:
 		abort(400)
 
