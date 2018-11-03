@@ -57,7 +57,7 @@ def webhook():
 	# template_data = {
 	# 	'result' : req
 	# }
-	return flask.render_template("budget.html", **template_data)
+	return flask.render_template("budget.html")
 
 @app.route('/', methods=['POST'])
 def form_input():
