@@ -3,6 +3,8 @@ from flask import Flask, url_for, request, render_template, jsonify
 import requests
 import paypalrestsdk 
 from paypalrestsdk import Webhook
+import numpy as np
+import matplotlib.pyplot as plt
 
 paypalrestsdk.configure({
 	'mode': 'sandbox', #sandbox or live
@@ -38,6 +40,10 @@ if webhook.create():
 else:
 	print(webhook.error)
 
+speant = 0
+total_budget = 0
+remaining = 0
+
 app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
@@ -51,16 +57,41 @@ def webhook():
 		print(req['create_time'])
 		time = req['create_time']
 		print(req['resource']['amount']['total'])
-		amout = req['resource']['amount']['total']
+		amount = req['resource']['amount']['total']
 		print(req['resource']['parent_payment'])
 		payment_id = req['resource']['parent_payment']
 		print(req['resource']['links'][2]['href'])
 		payment_url = req['resource']['links'][2]['href']
 
-		r = requests.get(payment_url)
-		print(r.json())
+		N = 1
+		speant -= amount
+		remaining = budget - speant
+
+		print(budget)
+		print(speant)
+		print(remaining)
+
+		ind = np.arange(N)    # the x locations for the groups
+		width = 0.15       # the width of the bars: can also be len(x) sequence
+
+		p1 = plt.bar(ind, remaining, width, color='#d62728')
+		p2 = plt.bar(ind, speant, width,
+		             bottom=remaining)
+
+		plt.ylabel('Amount')
+		plt.title('Rremaining in budget')
+		plt.xticks(ind, ('Budget'))
+		plt.yticks(np.arange(0, 101, 10))
+		plt.legend((p1[0], p2[0]), ('Remaining', 'Speant'))
+
+		fig = plt.gcf()
+		plt.show()
+		fig.savefig('img.png')
+
+
 	else:
 		abort(400)
+
 
 	# template_data = {
 	# 	'result' : req
