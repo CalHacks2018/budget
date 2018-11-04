@@ -58,11 +58,10 @@ def create_user():
     req['transactions'] = []
     new_user = USERS.push(req)
     user_id = new_user.key
-    print('[INFO] User ID: ', user_id)
+    # print('[INFO] User ID: ', user_id)
     user_details = _ensure_user(user_id)
     user_details['user_id'] = user_id
-    print('[INFO] User Info: ', user_details) # read_user(user_id).json)
-
+    # print('[INFO] User Info: ', user_details) # read_user(user_id).json)
     return render_template("budget.html", user=user_details) #, 201 
 
 @app.route('/users/<id>')
@@ -79,7 +78,7 @@ def update_user(id):
 	update_payload = request.form.to_dict() 
 	print('[INFO] Payload from web form: ', update_payload)
 
-	master_ref = USERS.child(id)
+	# master_ref = USERS.child(id) # too slow
 
 	transactions_ref = USERS.child(id).child('transactions')
 	transactions_ref.push(update_payload)
@@ -89,8 +88,9 @@ def update_user(id):
 	curr_budget -= float(update_payload['amount'])
 
 	budget_ref = USERS.child(id).child('budget')
-	# master_ref.update({'budget': curr_budget})
 	budget_ref.set(curr_budget)
+	# master_ref.update({'budget': curr_budget})
+	
 	#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
 	# USERS.child(id).update(req)
 	# ref.update({"transactions": req})
