@@ -147,8 +147,6 @@ def webhook(id):
 
 		transaction = {
 			'date': time,
-			'amount': amount,
-			'category': "Utilities"
 			'amount': np.random.uniform(0.01,350),
 			'category': np.random.choice(categories)
 		}
