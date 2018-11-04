@@ -16,7 +16,7 @@ def create_user():
     # print('[INFO]: ', request.form['budget'])
     # print('[INFO]: ', request.form.to_dict())
     req = request.form.to_dict() 
-    req['transactions'] = []
+    req['transactions'] = [{}]
     new_user = USERS.push(req)
     user_id = new_user.key
     print('[INFO] User ID: ', user_id)
