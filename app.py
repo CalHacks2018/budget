@@ -99,7 +99,7 @@ def delete_user(id):
 @app.route('/users', methods=['POST'])
 # def create_user():
 
-@app.route('/user/webhook/<id>', methods=['POST'])
+@app.route('/users/webhook/<id>', methods=['POST'])
 def webhook(id):
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
