@@ -55,7 +55,7 @@ USERS = db.reference('budget-node')
 @app.route('/index', methods =['POST'])
 def create_user():
     req = request.form.to_dict() 
-    req['transactions'] = [{}]
+    req['transactions'] = []
     new_user = USERS.push(req)
     user_id = new_user.key
     print('[INFO] User ID: ', user_id)
@@ -67,22 +67,29 @@ def create_user():
 
 @app.route('/users/<id>')
 def read_user(id):
-    return jsonify(_ensure_user(id))
+	# return jsonify(_ensure_user(id))
+	user_details = _ensure_user(id)
+	user_details['user_id'] = id
+	print('[INFO] User Info: ', user_details) 
+	return render_template("budget.html", user=user_details) 
 
 @app.route('/users/<id>', methods=['PUT', 'POST'])
 def update_user(id):
 	_ensure_user(id)
 	req = request.form.to_dict() 
-	print('[INFO] Payload: ', req)
 	ref = USERS.child(id).child('transactions')
+	print('[INFO] Payload: ', req)
 	ref.push(req)
+	print('format of data:', USERS.child(id))
 	# ref.update({"transactions": req})
 	#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
 	# USERS.child(id).update(req)
-	user_details = _ensure_user(id)
-	user_details['user_id'] = id
-	print('[INFO] User Info: ', user_details) 
-	return render_template("budget.html", user=user_details) # jsonify({'success': True})
+	# user_details = _ensure_user(id)
+	# user_details['user_id'] = id
+	# print('[INFO] User Info: ', user_details) 
+	return redirect(url_for('read_user', id = id)) 
+	# render_template("budget.html", user=user_details) 
+	# jsonify({'success': True})
 
 def _ensure_user(id):
     user = USERS.child(id).get()
