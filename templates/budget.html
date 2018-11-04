@@ -157,7 +157,7 @@
 	  		</div>
 		</div>
 		<div id="remaining">{{user.remainingBudget}}</div>
-		<div id="spent">{{spent}}</div>
+		<div id="spent">{{ (user.ogBudget|int - user.remainingBudget|int)}}</div>
 		<div class="remaining">
 			<h2>Current balance: ${{'%0.2f' % user.remainingBudget | float}}</h2>
 			<h3>Spent:&nbsp; ${{'%0.2f' % (user.ogBudget|int - user.remainingBudget|int) | float}}</h3>
@@ -200,7 +200,7 @@
 				      var remain = document.getElementById("remaining").innerHTML;
 				      var spent = document.getElementById("spent").innerHTML;
 				      remain = parseInt(remain, 10)
-				      spent = parseInt(spent,10)
+				  	  spent = parseInt(spent, 10)
 				      data.addColumn('string', 'Budget');
 				      data.addColumn('number', 'Remaining Funds');
 				      data.addColumn('number', 'Spent');
