@@ -1,14 +1,14 @@
-import flask 
-from flask import Flask, url_for, request, render_template, jsonify
-import requests
-import paypalrestsdk 
-from paypalrestsdk import Webhook
-import numpy as np
-import matplotlib.pyplot as plt
+# import flask 
 from flask import Flask, request, render_template, redirect, jsonify, abort, url_for, make_response
 import requests
+import paypalrestsdk 
 from firebase_admin import db, initialize_app
+from paypalrestsdk import Webhook
 import os 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "budget-data-d6bdc-firebase-adminsdk-bu5t8-383b28eb2d.json"
 paypalrestsdk.configure({
@@ -58,7 +58,6 @@ def create_user():
     req['transactions'] = []
     new_user = USERS.push(req)
     user_id = new_user.key
-    # print('[INFO] User ID: ', user_id)
     user_details = _ensure_user(user_id)
     user_details['user_id'] = user_id
     # print('[INFO] User Info: ', user_details) # read_user(user_id).json)
@@ -70,6 +69,19 @@ def read_user(id):
 	user_details = _ensure_user(id)
 	user_details['user_id'] = id
 	print('[INFO] User Info: ', user_details) 
+	transactions = user_details['transactions']
+	categories = []
+	amounts = []
+	for t in transactions:
+	    category = transactions.get(t)['category']
+	    amount = float(transactions.get(t)['amount'])
+	    categories.append(category)
+	    amounts.append(amount)
+	df = pd.DataFrame({'category': categories})
+	df['amounts'] = amounts
+	df = df.groupby('category').agg(sum).reset_index()
+	grouped_categories = np.array(df.to_dict(orient='records'))
+	print('[INFO] Grouped Data: ', grouped_categories) 
 	return render_template("budget.html", user=user_details) 
 
 @app.route('/users/<id>', methods=['PUT', 'POST'])
@@ -79,7 +91,6 @@ def update_user(id):
 	print('[INFO] Payload from web form: ', update_payload)
 
 	# master_ref = USERS.child(id) # too slow
-
 	transactions_ref = USERS.child(id).child('transactions')
 	transactions_ref.push(update_payload)
 	# master_ref.push({'transactions': update_payload})
@@ -115,6 +126,9 @@ def delete_user(id):
 
 @app.route('/users/webhook/<id>', methods=['POST'])
 def webhook(id):
+
+	categories = ["Entertainment", 'Food', 'Shopping', 'Utilities', 'Miscellaneous']
+	
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
 		sale_id = req['id']
@@ -125,8 +139,8 @@ def webhook(id):
 
 		transaction = {
 			'date': time,
-			'amount': amount,
-			'category': 'random'
+			'amount': np.random.uniform(0.01,350),
+			'category': np.random.choice(categories)
 		}
 
 		print('[INFO] Transaction: ', transaction)

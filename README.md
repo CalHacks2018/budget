@@ -4,10 +4,6 @@ A Personal Finance Manager with Alexa, Machine Learning, Blockchain, Big Data, I
 
 ## Useful commands: 
 
-A Personal Finance Manager with Machine Learning, Blockchain, Big Data, Innovation, Cutting Edge AI, and Nuddhist Buddhists.  
-
-## Useful commands: 
-
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=budget-data-d6bdc-firebase-adminsdk-bu5t8-383b28eb2d.json
 export FLASK_APP=app.py
