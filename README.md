@@ -1,4 +1,4 @@
-# Budge-it :money_with_wings: :sparkler: :chart_with_downwards_trend:
+# Budge-it :money_with_wings: :shipit: :chart_with_downwards_trend:
 
 A Personal Finance Manager with Alexa, Machine Learning, Blockchain, Big Data, Innovation, Cutting Edge AI, and Nuddhist Buddhists.  
 
