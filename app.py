@@ -66,6 +66,7 @@ def create_user():
     print('[INFO] User Info: ', user_details) # read_user(user_id).json)
     global ogBudget
     ogBudget = req['budget']
+    global totalSpent
     return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent) #, 201 
 
 @app.route('/users/<id>')
@@ -116,7 +117,7 @@ def update_user(id):
 	#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
 	# USERS.child(id).update(req)
 	# ref.update({"transactions": req})
-	return redirect(url_for('read_user', id = id)) 
+	return redirect(url_for('read_user', id = id, ogBudget=ogBudget, spent=totalSpent)) 
 	# render_template("budget.html", user=user_details) 
 	# jsonify({'success': True})
 

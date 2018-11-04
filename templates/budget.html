@@ -251,7 +251,7 @@
 					{% for key, value in user.transactions.items() %}
 					   <tr>
 					        <td> {{ value.category }} </td>
-					        <td> {{ value.amount }} </td>
+					        <td> ${{'%0.2f' % value.amount | float}} </td>
 					   </tr>
 					{% endfor %}
 					{% endif %}		        
