@@ -54,17 +54,21 @@ USERS = db.reference('budget-node')
 
 @app.route('/index', methods =['POST'])
 def create_user():
-    req = request.form.to_dict() 
-    req['transactions'] = []
-    req['ogBudget'] = req['budget']
-    req['remainingBudget'] = req['budget']
-    # req['spent'] = 0
-    new_user = USERS.push(req)
-    user_id = new_user.key
-    user_details = _ensure_user(user_id)
-    user_details['user_id'] = user_id
-    print('[INFO] User Info: ', user_details) # read_user(user_id).json)
-    return render_template("budget.html", user=user_details) #, 201 
+	demo_id = '-LQUUExj1_lixDG_foqN'
+
+	req = request.form.to_dict() 
+	req['transactions'] = []
+	req['ogBudget'] = req['budget']
+	req['remainingBudget'] = req['budget']
+	# req['spent'] = 0
+	# master_ref = USERS.child(demo_id)
+
+	new_user = USERS.push(req) # UNCOMMENT FOR REGULAR FUNCTIONALITY
+	user_id = new_user.key
+	user_details = _ensure_user(user_id)
+	user_details['user_id'] = user_id
+	print('[INFO] User Info: ', user_details) # read_user(user_id).json)
+	return render_template("budget.html", user=user_details) #, 201 
 
 @app.route('/users/<id>')
 def read_user(id):
@@ -131,7 +135,7 @@ def delete_user(id):
 def webhook(id):
 
 	categories = ["Entertainment", 'Food', 'Shopping', 'Utilities', 'Miscellaneous']
-	
+	demo_categories = ['Entertainment', 'Utilities']
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
 		sale_id = req['id']
@@ -142,8 +146,8 @@ def webhook(id):
 
 		transaction = {
 			'transaction-date': time,
-			'amount': int(np.random.uniform(0.01,100)),
-			'category': np.random.choice(categories)
+			'amount': 12,# int(np.random.uniform(0.01,10)),
+			'category': np.random.choice(demo_categories)
 		}
 
 		curr_budget = float(USERS.child(id).child('remainingBudget').get())
