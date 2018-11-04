@@ -112,7 +112,7 @@ def webhook(id):
 		transaction = {
 			'date': time,
 			'amount': amount,
-			'category': 'random'
+			'category': "Utilities"
 		}
 
 		print('[INFO] Transaction: ', transaction)
