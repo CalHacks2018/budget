@@ -117,7 +117,7 @@ def webhook(id):
 
 		print('[INFO] Transaction: ', transaction)
 		ref = USERS.child(id).child('transactions')
-		ref.push(req)
+		ref.push(transaction)
 		# ref.update({"transactions": req})
 		#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
 		# USERS.child(id).update(req)
