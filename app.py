@@ -56,7 +56,7 @@ USERS = db.reference('budget-node')
 @app.route('/index', methods =['POST'])
 def create_user():
     req = request.form.to_dict() 
-    req['transactions'] = []
+    req['transactions'] = [{}]
     new_user = USERS.push(req)
     user_id = new_user.key
     print('[INFO] User ID: ', user_id)
@@ -75,9 +75,14 @@ def update_user(id):
 	_ensure_user(id)
 	req = request.form.to_dict() 
 	print('[INFO] Payload: ', req)
-	print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
+	ref = USERS.child(id).child('transactions')
+	ref.push(req)
+	# ref.update({"transactions": req})
+	#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
 	# USERS.child(id).update(req)
 	user_details = _ensure_user(id)
+	user_details['user_id'] = id
+	print('[INFO] User Info: ', user_details) 
 	return render_template("budget.html", user=user_details) # jsonify({'success': True})
 
 def _ensure_user(id):

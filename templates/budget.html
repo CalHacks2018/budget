@@ -46,16 +46,32 @@
 
 ======= -->
 
+<head>
+	<link rel="stylesheet" href="../static/styles.css">
+</head>
+
 <h1> Welcome {{user.name}}! </h1>
 
-<body>
-Here's your budget: {{user.budget}}
-<br>
-
-Here are transactions: {{user.transactions}}
+  <body>
+	Here's your budget: {{user.budget}}
+	<br>
+	<table id="customers">
+		{% if user.transactions is defined %}
+			<tr> 
+				<th>Category</th>
+       			<th>Cost</th>
+			</tr>
+		{% for key, value in user.transactions.items() %}
+		   <tr>
+		        <th> {{ value.type }} </th>
+		        <td> {{ value.amount }} </td>
+		   </tr>
+		{% endfor %}
+		{% endif %}
+        
+	</table>
  
 	<h2> Add Transaction </h2>
-
 	<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
 		Amount: <input name="amount" type="text"> <br><br>
 		Category: 
