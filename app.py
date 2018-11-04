@@ -67,6 +67,7 @@ def create_user():
     global ogBudget
     ogBudget = req['budget']
     global totalSpent
+    print("PRINTING TOTAL SPENT1!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
     return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent) #, 201 
 
 @app.route('/users/<id>')
@@ -91,6 +92,7 @@ def read_user(id):
 	print('[INFO] Grouped Data: ', grouped_categories) 
 	global ogBudget
 	global totalSpent
+	print("PRINTING TOTAL SPENT2!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
 	return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent)  
 
 @app.route('/users/<id>', methods=['PUT', 'POST'])
@@ -109,7 +111,7 @@ def update_user(id):
 	global totalSpent 
 	totalSpent+=float(update_payload['amount'])
 	global ogBudget
-	print("PRINTING TOTAL SPENT!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
+	print("PRINTING TOTAL SPENT3!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
 	budget_ref = USERS.child(id).child('budget')
 	budget_ref.set(curr_budget)
 	# master_ref.update({'budget': curr_budget})
@@ -192,6 +194,7 @@ def webhook(id):
 		# fig.savefig('img.png')
 	else:
 		abort(400)
+		print("PRINTING TOTAL SPENT4!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
 	return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent)
 
 
