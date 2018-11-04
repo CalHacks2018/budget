@@ -10,7 +10,6 @@ import requests
 from firebase_admin import db, initialize_app
 import os 
 
-
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "budget-data-d6bdc-firebase-adminsdk-bu5t8-383b28eb2d.json"
 paypalrestsdk.configure({
 	'mode': 'sandbox', #sandbox or live
@@ -101,7 +100,7 @@ def delete_user(id):
 # def create_user():
 
 @app.route('/user/webhook/<id>', methods=['POST'])
-def webhook():
+def webhook(id):
 	if request.method == 'POST':
 		req = request.get_json(silent=True, force=True)
 		sale_id = req['id']
@@ -116,8 +115,15 @@ def webhook():
 			'category': 'random'
 		}
 
-		print(transaction)
-
+		print('[INFO] Transaction: ', transaction)
+		ref = USERS.child(id).child('transactions')
+		ref.push(req)
+		# ref.update({"transactions": req})
+		#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
+		# USERS.child(id).update(req)
+		user_details = _ensure_user(id)
+		user_details['user_id'] = id
+		print('[INFO] User Info: ', user_details) 	
 		# db[id][transaction].append(transaction)
 		# db[id][spent]+=transation[amount]
 		# N = 1
@@ -142,11 +148,9 @@ def webhook():
 		# fig = plt.gcf()
 		# plt.show()
 		# fig.savefig('img.png')
-
-
 	else:
 		abort(400)
-	return render_template("new_user.html")
+	return render_template("budget.html", user=user_details)
 
 
 @app.route('/')
