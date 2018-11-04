@@ -111,6 +111,8 @@ def webhook():
 			'category': 'random'
 		}
 
+		print(transaction)
+
 		# db[id][transaction].append(transaction)
 		# db[id][spent]+=transation[amount]
 		# N = 1
