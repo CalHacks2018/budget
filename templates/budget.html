@@ -1,88 +1,105 @@
 <!DOCTYPE html>
 
-<!-- <<<<<<< HEAD
-<!DOCTYPE html>
-
-<head>
-	<title>Budget Tracker</title>
-</head>
-
-<body>
-	<div><p>Hi {{name}}!</p></div>
-	<div><p>Your weekly budget: {{budget}}</p></div>
-
-	<ul class="bar-graph">
-	  <li class="bar-graph-axis">
-	    <div class="bar-graph-label">100%</div>
-	    <div class="bar-graph-label">80%</div>
-	    <div class="bar-graph-label">60%</div>
-	    <div class="bar-graph-label">40%</div>
-	    <div class="bar-graph-label">20%</div>
-	    <div class="bar-graph-label">0%</div>
-	  </li>
-	  <li class="bar primary" style="height: 95%;" title="95">
-	    <div class="percent">95<span>%</span></div>
-	    <div class="description">Yetis</div>
-	  </li>
-	  <li class="bar secondary" style="height: 90%;" title="90">
-	    <div class="percent">90<span>%</span></div>
-	    <div class="description">ZURBians</div>
-	  </li>
-	  <li class="bar success" style="height: 80%;" title="80">
-	    <div class="percent">80<span>%</span></div>
-	    <div class="description">Cows</div>
-	  </li>
-	  <li class="bar warning" style="height: 75%;" title="75">
-	    <div class="percent">75<span>%</span></div>
-	    <div class="description">Cows that think they're Yetis</div>
-	  </li>
-	  <li class="bar alert" style="height: 40%;" title="40">
-	    <div class="percent">40<span>%</span></div>
-	    <div class="description">Who knows</div>
-	  </li>
-	</ul>
-
-
-
-======= -->
-
 <head>
 	<link rel="stylesheet" href="../static/styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:700|Open+Sans|Roboto" rel="stylesheet">
+	<style>
+		body, html {
+			margin: 0;
+    		padding: 0;
+    		border: 0;
+    		outline: 0;
+		}
+		
+		.welcome {
+			font-family: 'Montserrat', sans-serif;
+			color: white;
+			background-image: linear-gradient(to right, #002800, black);
+			padding-top: .3%;
+			padding-bottom: 2%;
+		}
+		.welcome h1 {
+			margin-bottom: unset;
+			font-size: 24pt;
+		}
+
+		.display_budget {
+			font-family: 'Montserrat', sans-serif;
+			color: white;
+			font-size: 18pt;
+		}
+
+		.content {
+			display: flex;
+			flex-direction: flow;
+			justify-content: space-around;
+			align-items: stretch;
+		}
+
+		.col1 {
+
+		}
+
+		.col2 {
+
+		}
+
+		.col3 {
+
+		}
+
+		.add_trans_box {
+
+		}
+
+		.
+	</style>
+
+
 </head>
-
-<h1> Welcome {{user.name}}! </h1>
-
   <body>
-	Here's your budget: {{user.budget}}
-	<br>
-	<table id="customers">
-		{% if user.transactions is defined %}
-			<tr> 
-				<th>Category</th>
-       			<th>Cost</th>
-			</tr>
-		{% for key, value in user.transactions.items() %}
-		   <tr>
-		        <th> {{ value.type }} </th>
-		        <td> {{ value.amount }} </td>
-		   </tr>
-		{% endfor %}
-		{% endif %}
-        
-	</table>
- 
-	<h2> Add Transaction </h2>
-	<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
-		Amount: <input name="amount" type="text"> <br><br>
-		Category: 
-		<input list="categories" name="type">
-		<datalist id="categories">
-			<option value="Entertainment">
-			<option value="Food">
-			<option value="Shopping">
-			<option value="Utilities">
-			<option value="Miscellaneous">
-		</datalist><br><br>
-	    <input type="submit" value="Submit">
-	</form>
+  	<div class="header">
+	  	<div class="welcome">
+	  		<h1> Welcome {{user.name}} </h1><br>
+	  		<div class="display_budget">
+				Budget: {{user.budget}}
+				<br>
+	  		</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="add_trans_box">
+			<h2> Add Transaction </h2>
+			<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
+				Amount: <input name="amount" type="text"> <br><br>
+				Category: 
+				<input list="categories" name="type">
+				<datalist id="categories">
+					<option value="Entertainment">
+					<option value="Food">
+					<option value="Shopping">
+					<option value="Utilities">
+					<option value="Miscellaneous">
+				</datalist><br><br>
+			    <input type="submit" value="Submit">
+			</form>
+		</div>
+
+		<div class="table_container">
+			<table id="customers">
+				{% if user.transactions is defined %}
+					<tr> 
+						<th>Category</th>
+		       			<th>Cost</th>
+					</tr>
+				{% for key, value in user.transactions.items() %}
+				   <tr>
+				        <th> {{ value.type }} </th>
+				        <td> {{ value.amount }} </td>
+				   </tr>
+				{% endfor %}
+				{% endif %}		        
+			</table>
+		</div>
+	</div>
 </body>

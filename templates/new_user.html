@@ -1,19 +1,54 @@
 <!DOCTYPE html>
 <head>
 	<title>Landing Page</title>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:700|Open+Sans|Roboto" rel="stylesheet">
+	<style>
+		body {
+			background-image: url("https://i.imgur.com/mnUvYIk.jpg");
+		}
+		.title {
+			font-family: 'Montserrat', sans-serif;
+			color: white;
+			font-weight: bold;
+			text-align: center;
+		}
+		.title h1 {
+			margin-bottom: unset;
+			font-size: 48pt;
+		}
+		.title p {
+			margin-bottom: unset;
+			font-size: 22pt;
+		}
+		.form {
+			font-family: 'Montserrat', sans-serif;
+			color: white;
+			font-weight: bold;
+			text-align: center;
+		}
+
+	</style>
 
 </head>
+
+
+
+
+
 <body>
 	<div>
-		<h2> Welcome to Budget! </h2>
-		<h3> Please enter your name and weekly budget to get started </h3>
-
-		<form action="{{ url_for('create_user') }}" method="post">
-			Name: <input name="name" type="text">
-			<br><br>
-			Budget: <input name="budget" type="text">
-			<br><br>
-		    <input id="my_submit" type="submit" value="Submit">
-		</form>
+		<div class="title">
+			<h1> Budget </h1>
+			<p>Please enter your name and weekly budget to get started. </p><br><br>
+		</div>
+		<div class="form">
+			<form action="{{ url_for('create_user') }}" method="post">
+				&nbsp; Name: <input name="name" type="text">
+				<br><br>
+				Budget: <input name="budget" type="text">
+				<br><br>
+			    <input id="my_submit" type="submit" value="Submit">
+			</form>
+		</div>
 	</div>
 </body>
