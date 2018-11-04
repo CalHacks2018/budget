@@ -152,15 +152,15 @@
 	  	<div class="welcome">
 	  		<h1> Welcome {{user.name}} </h1><br>
 	  		<div class="display_budget">
-				Budget: ${{'%0.2f' % ogBudget | float}}
+				Budget: ${{'%0.2f' % user.ogBudget | float}}
 				<br>
 	  		</div>
 		</div>
-		<div id="remaining">{{user.budget}}</div>
+		<div id="remaining">{{user.remainingBudget}}</div>
 		<div id="spent">{{spent}}</div>
 		<div class="remaining">
-			<h2>Current balance: ${{'%0.2f' % user.budget | float}}</h2>
-			<h3>Spent:&nbsp; ${{'%0.2f' % spent | float}}</h3>
+			<h2>Current balance: ${{'%0.2f' % user.remainingBudget | float}}</h2>
+			<h3>Spent:&nbsp; ${{'%0.2f' % (user.ogBudget|int - user.remainingBudget|int) | float}}</h3>
 		</div>
 	</div>
 	<div class="content">

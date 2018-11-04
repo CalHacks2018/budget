@@ -45,9 +45,6 @@ if webhook.create():
 else:
 	print(webhook.error)
 
-ogBudget = 0
-totalSpent = 0
-
 app = Flask(__name__)
 
 initialize_app(options={
@@ -59,15 +56,15 @@ USERS = db.reference('budget-node')
 def create_user():
     req = request.form.to_dict() 
     req['transactions'] = []
+    req['ogBudget'] = req['budget']
+    req['remainingBudget'] = req['budget']
+    # req['spent'] = 0
     new_user = USERS.push(req)
     user_id = new_user.key
     user_details = _ensure_user(user_id)
     user_details['user_id'] = user_id
     print('[INFO] User Info: ', user_details) # read_user(user_id).json)
-    global ogBudget
-    ogBudget = req['budget']
-    print("PRINTING TOTAL SPENT1!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
-    return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent) #, 201 
+    return render_template("budget.html", user=user_details) #, 201 
 
 @app.route('/users/<id>')
 def read_user(id):
@@ -89,8 +86,7 @@ def read_user(id):
 	df = df.groupby('category').agg(sum).reset_index()
 	grouped_categories = np.array(df.to_dict(orient='records'))
 	print('[INFO] Grouped Data: ', grouped_categories) 
-	print("PRINTING TOTAL SPENT2!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
-	return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent)  
+	return render_template("budget.html", user=user_details)  
 
 @app.route('/users/<id>', methods=['PUT', 'POST'])
 def update_user(id):
@@ -103,19 +99,16 @@ def update_user(id):
 	transactions_ref.push(update_payload)
 	# master_ref.push({'transactions': update_payload})
 	# print('[INFO] Total Amount? ', USERS.child(id).child('budget').get())
-	curr_budget = float(USERS.child(id).child('budget').get())
+	curr_budget = float(USERS.child(id).child('remainingBudget').get())
 	curr_budget -= float(update_payload['amount'])
-	global totalSpent 
-	totalSpent+=float(update_payload['amount'])
-	print("PRINTING TOTAL SPENT3!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
-	budget_ref = USERS.child(id).child('budget')
+	budget_ref = USERS.child(id).child('remainingBudget')
 	budget_ref.set(curr_budget)
 	# master_ref.update({'budget': curr_budget})
 	
 	#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
 	# USERS.child(id).update(req)
 	# ref.update({"transactions": req})
-	return redirect(url_for('read_user', id = id, ogBudget=ogBudget, spent=totalSpent)) 
+	return redirect(url_for('read_user', id = id))
 	# render_template("budget.html", user=user_details) 
 	# jsonify({'success': True})
 
@@ -188,8 +181,7 @@ def webhook(id):
 		# fig.savefig('img.png')
 	else:
 		abort(400)
-		print("PRINTING TOTAL SPENT4!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
-	return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent)
+	return render_template("budget.html", user=user_details)
 
 
 @app.route('/')
