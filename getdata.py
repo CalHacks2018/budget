@@ -5,10 +5,7 @@ import datetime
 import time
 import pytz
 import boto3
-dynamodb=boto3.resource('dynamodb',region_name='us-east-1', \
-                                      aws_access_key_id='AKIARBUJZTBKRFU4NIOD',\
-                                      aws_secret_access_key='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')
-table=dynamodb.Table('BudgetTweets')
+
 
 mapdhost = 'use2-api.omnisci.cloud'
 mapdport = '443'
