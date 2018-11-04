@@ -4,7 +4,6 @@ import os
 import datetime
 import time
 import pytz
-import boto3
 
 
 mapdhost = 'use2-api.omnisci.cloud'
@@ -24,20 +23,9 @@ def tweets():
 	df = mapdcon.execute(query)
 	#print(df.rowcount) # count of rows returned
 	#print(list(df)) # the result is returned as a python list
-	for i,j in df:
-		print(i,j)
-		update_tweets(i,j)
+	
 	return tweets
 
-def update_tweets(username, tweet):
-    table.update_item(
-        Key={'tweet': username},
-        AttributeUpdates={
-            'sentence': {
-                'Value': tweet
-            }
-        }
-    )
 
 """if __name__ == '__main__':
    main()"""
