@@ -141,7 +141,7 @@ def webhook(id):
 		payment_url = req['resource']['links'][2]['href']
 
 		transaction = {
-			'date': time,
+			'transaction-date': time,
 			'amount': int(np.random.uniform(0.01,100)),
 			'category': np.random.choice(categories)
 		}
