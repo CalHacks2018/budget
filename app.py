@@ -66,7 +66,6 @@ def create_user():
     print('[INFO] User Info: ', user_details) # read_user(user_id).json)
     global ogBudget
     ogBudget = req['budget']
-    global totalSpent
     print("PRINTING TOTAL SPENT1!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
     return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent) #, 201 
 
@@ -90,8 +89,6 @@ def read_user(id):
 	df = df.groupby('category').agg(sum).reset_index()
 	grouped_categories = np.array(df.to_dict(orient='records'))
 	print('[INFO] Grouped Data: ', grouped_categories) 
-	global ogBudget
-	global totalSpent
 	print("PRINTING TOTAL SPENT2!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
 	return render_template("budget.html", user=user_details, ogBudget=ogBudget, spent=totalSpent)  
 
@@ -110,7 +107,6 @@ def update_user(id):
 	curr_budget -= float(update_payload['amount'])
 	global totalSpent 
 	totalSpent+=float(update_payload['amount'])
-	global ogBudget
 	print("PRINTING TOTAL SPENT3!!!!!!!!!!!!!!!!!!!!! {}".format(totalSpent))
 	budget_ref = USERS.child(id).child('budget')
 	budget_ref.set(curr_budget)
@@ -144,8 +140,6 @@ def webhook(id):
 	categories = ["Entertainment", 'Food', 'Shopping', 'Utilities', 'Miscellaneous']
 	
 	if request.method == 'POST':
-		global ogBudget
-		global totalSpent
 		req = request.get_json(silent=True, force=True)
 		sale_id = req['id']
 		time = req['create_time']
