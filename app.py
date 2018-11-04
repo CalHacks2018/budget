@@ -76,17 +76,24 @@ def read_user(id):
 @app.route('/users/<id>', methods=['PUT', 'POST'])
 def update_user(id):
 	_ensure_user(id)
-	req = request.form.to_dict() 
-	ref = USERS.child(id).child('transactions')
-	print('[INFO] Payload: ', req)
-	ref.push(req)
-	print('format of data:', USERS.child(id))
-	# ref.update({"transactions": req})
+	update_payload = request.form.to_dict() 
+	print('[INFO] Payload from web form: ', update_payload)
+
+	master_ref = USERS.child(id)
+
+	transactions_ref = USERS.child(id).child('transactions')
+	transactions_ref.push(update_payload)
+	# master_ref.push({'transactions': update_payload})
+	# print('[INFO] Total Amount? ', USERS.child(id).child('budget').get())
+	curr_budget = float(USERS.child(id).child('budget').get())
+	curr_budget -= float(update_payload['amount'])
+
+	budget_ref = USERS.child(id).child('budget')
+	# master_ref.update({'budget': curr_budget})
+	budget_ref.set(curr_budget)
 	#  print('[INFO] Payload: ', USERS.child(id).child('transactions').push(req))
 	# USERS.child(id).update(req)
-	# user_details = _ensure_user(id)
-	# user_details['user_id'] = id
-	# print('[INFO] User Info: ', user_details) 
+	# ref.update({"transactions": req})
 	return redirect(url_for('read_user', id = id)) 
 	# render_template("budget.html", user=user_details) 
 	# jsonify({'success': True})
@@ -103,7 +110,7 @@ def delete_user(id):
     USERS.child(id).delete()
     return jsonify({'success': True})
 
-@app.route('/users', methods=['POST'])
+# @app.route('/users', methods=['POST'])
 # def create_user():
 
 @app.route('/users/webhook/<id>', methods=['POST'])
