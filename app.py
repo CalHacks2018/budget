@@ -84,9 +84,10 @@ def read_user(id):
 	df = pd.DataFrame({'category': categories})
 	df['amounts'] = amounts
 	df = df.groupby('category').agg(sum).reset_index()
+	group = df.to_dict(orient='records')
 	grouped_categories = np.array(df.to_dict(orient='records'))
 	print('[INFO] Grouped Data: ', grouped_categories) 
-	return render_template("budget.html", user=user_details)  
+	return render_template("budget.html", user=user_details, group=group)  
 
 @app.route('/users/<id>', methods=['PUT', 'POST'])
 def update_user(id):

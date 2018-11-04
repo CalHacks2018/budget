@@ -256,6 +256,22 @@
 					{% endif %}		        
 				</table>
 			</div>
+			<div class="table_container">
+				<table id="table">
+					{% if group is defined %}
+						<tr> 
+							<th>Category</th>
+			       			<th>Percent</th>
+						</tr>
+					{% for i in group %}
+					   <tr>
+					        <td> {{ i['category'] }} </td>
+					        <td> {{'%0.2f' % ((i['amounts']|float/(user.ogBudget|int - user.remainingBudget|int)|float)*100)}}% </td>
+					   </tr>
+					{% endfor %}
+					{% endif %}		        
+				</table>
+			</div>
 		</div>
 	</div> 
 </body>
