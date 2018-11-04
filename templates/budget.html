@@ -57,8 +57,16 @@ Here are transactions: {{user.transactions}}
 	<h2> Add Transaction </h2>
 
 	<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
-		Category: <input name="type" type="text"> <br>
-		Amount: <input name="amount" type="text"> <br>
+		Amount: <input name="amount" type="text"> <br><br>
+		Category: 
+		<input list="categories" name="type">
+		<datalist id="categories">
+			<option value="Entertainment">
+			<option value="Food">
+			<option value="Shopping">
+			<option value="Utilities">
+			<option value="Miscellaneous">
+		</datalist><br><br>
 	    <input type="submit" value="Submit">
 	</form>
 </body>

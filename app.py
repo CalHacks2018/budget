@@ -19,7 +19,7 @@ paypalrestsdk.configure({
 })
 
 webhook = Webhook({
-	"url": "https://budget-track.herokuapp.com/webhhook",
+	"url": "https://budget-track.herokuapp.com/webhook",
 	"event_types": [{
 	"name": "PAYMENT.SALE.COMPLETED"
 	},{
