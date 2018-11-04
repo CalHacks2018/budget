@@ -14,3 +14,6 @@ paypal==1.2.5
 paypalrestsdk==1.13.1
 matplotlib==3.0.0
 firebase-admin==2.13.0
+pymapd
+pandas
+boto3
