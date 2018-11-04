@@ -155,30 +155,7 @@ def webhook(id):
 		user_details = _ensure_user(id)
 		user_details['user_id'] = id
 		print('[INFO] User Info: ', user_details) 	
-		# db[id][transaction].append(transaction)
-		# db[id][spent]+=transation[amount]
-		# N = 1
-		# global speant 
-		# speant -= float(amount)
-		# global budget
-		# remaining = budget - speant
 
-		# ind = np.arange(N)    # the x locations for the groups
-		# width = 0.15       # the width of the bars: can also be len(x) sequence
-
-		# p1 = plt.bar(ind, remaining, width, color='#d62728')
-		# p2 = plt.bar(ind, speant, width,
-		#              bottom=remaining)
-
-		# plt.ylabel('Amount')
-		# plt.title('Rremaining in budget')
-		# plt.xticks(ind, ('Budget'))
-		# plt.yticks(np.arange(0, 101, 10))
-		# plt.legend((p1[0], p2[0]), ('Remaining', 'Speant'))
-
-		# fig = plt.gcf()
-		# plt.show()
-		# fig.savefig('img.png')
 	else:
 		abort(400)
 	return render_template("budget.html", user=user_details)
