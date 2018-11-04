@@ -9,55 +9,75 @@
     		padding: 0;
     		border: 0;
     		outline: 0;
+    		height: 100%;
+		}
+
+		.header{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			background-image: linear-gradient(to right, #002800, black);
+			padding-top: .1%;
+			padding-bottom: 2%;
 		}
 		
 		.welcome {
 			font-family: 'Montserrat', sans-serif;
 			color: white;
-			background-image: linear-gradient(to right, #002800, black);
-			padding-top: .3%;
-			padding-bottom: 2%;
 		}
 		.welcome h1 {
 			margin-bottom: unset;
-			font-size: 24pt;
+			font-size: 20pt;
+			margin-left: 2vw;
 		}
 
 		.display_budget {
 			font-family: 'Montserrat', sans-serif;
 			color: white;
-			font-size: 18pt;
+			font-size: 14pt;
+			margin-left: 2vw;
+		}
+
+		.remaining {
+			font-family: 'Montserrat', sans-serif;
+			color: white;
+			font-size: 14pt;
+			margin-right: 2vw;
 		}
 
 		.content {
 			display: flex;
-			flex-direction: flow;
+			flex-direction: row;
 			justify-content: space-around;
 			align-items: stretch;
+			height: 100%;
 		}
 
 		.col1 {
-
+			width: 28vw;
+			height: 100%;
 		}
 
 		.col2 {
-
+			width: 43vw;
+			height: 100%;
 		}
 
-<head>
-	<link rel="stylesheet" href="../static/styles.css">
-	<!-- <script src="../static/non-empty.js"></script> -->
-</head>
 
 		.col3 {
-
+			width: 28vw;
 		}
 
 		.add_trans_box {
+			margin-left: 4vw;
 
 		}
 
-		.
+		.chart {
+			padding-top: 3%;
+			height: 75%;
+			width: 100%;
+		}
 	</style>
 
 
@@ -71,40 +91,94 @@
 				<br>
 	  		</div>
 		</div>
+		<div class="remaining">
+			<h2> Remaining: $??.??</h2>
+		</div>
 	</div>
 	<div class="content">
-		<div class="add_trans_box">
-			<h2> Add Transaction </h2>
-			<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
-				Amount: <input name="amount" type="text"> <br><br>
-				Category: 
-				<input list="categories" name="type">
-				<datalist id="categories">
-					<option value="Entertainment">
-					<option value="Food">
-					<option value="Shopping">
-					<option value="Utilities">
-					<option value="Miscellaneous">
-				</datalist><br><br>
-			    <input type="submit" value="Submit">
-			</form>
+		<div class="col1">
+			<div class="add_trans_box">
+				<h2> Add Transaction </h2>
+				<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
+					Amount: <input name="amount" type="text"> <br><br>
+					Category: 
+					<input list="categories" name="type">
+					<datalist id="categories">
+						<option value="Entertainment">
+						<option value="Food">
+						<option value="Shopping">
+						<option value="Utilities">
+						<option value="Miscellaneous">
+					</datalist><br><br>
+				    <input type="submit" value="Submit">
+				</form>
+			</div>
 		</div>
 
-		<div class="table_container">
-			<table id="customers">
-				{% if user.transactions is defined %}
-					<tr> 
-						<th>Category</th>
-		       			<th>Cost</th>
-					</tr>
-				{% for key, value in user.transactions.items() %}
-				   <tr>
-				        <th> {{ value.type }} </th>
-				        <td> {{ value.amount }} </td>
-				   </tr>
-				{% endfor %}
-				{% endif %}		        
-			</table>
+		<div class="col2">
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+			<script type="text/javascript">
+				google.charts.load('current', {packages: ['corechart', 'bar']});
+				google.charts.setOnLoadCallback(drawStacked);
+
+				function drawStacked() {
+				      var data = new google.visualization.DataTable();
+				      data.addColumn('string', 'Budget');
+				      data.addColumn('number', 'Remaining Funds');
+				      data.addColumn('number', 'Spent');
+				      // data.addColumn('number', 'Entertainment');
+				      // data.addColumn('number', 'Food');
+				      // data.addColumn('number', 'Utilities');
+				      // data.addColumn('number', 'Shopping');
+				      // data.addColumn('number', 'Miscellaneous');
+
+				      data.addRows([
+				        ['', 25, 5],
+				      ]);
+
+				      var options = {
+				      	width: '60%',
+				        title: 'Weekly Budget Spending',
+				        isStacked: true,
+				        hAxis: {
+				          title: 'Budget Breakdown',
+				          format: '',
+				          viewWindow: {
+				            min: [7, 30, 0],
+				            max: [17, 30, 0]
+				          }
+				        },
+				        vAxis: {
+				          title: 'Amount',
+				        },
+				        chartArea: {left: 40, width: '60%'}
+
+				      };
+
+				      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+				      chart.draw(data, options);
+				    }
+			</script>
+  			<div class="chart" id="chart_div"></div>
+		</div>
+
+		<div class="col3">
+			<div class="table_container">
+				<table id="customers">
+					{% if user.transactions is defined %}
+						<tr> 
+							<th>Category</th>
+			       			<th>Cost</th>
+						</tr>
+					{% for key, value in user.transactions.items() %}
+					   <tr>
+					        <th> {{ value.type }} </th>
+					        <td> {{ value.amount }} </td>
+					   </tr>
+					{% endfor %}
+					{% endif %}		        
+				</table>
+			</div>
 		</div>
 	</div>
 </body>
