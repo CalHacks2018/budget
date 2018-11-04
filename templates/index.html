@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 
 <head>
-	<title>Cal Hacks 2018</title>
+	<title>Budget Tracker</title>
 </head>
 
 <body>
-	<h1>STOKED TO HACK :D<h1>
+	<h2> Add Transaction </h2>
 
-	<img src="https://i.imgur.com/Se7xplj.gif" title="source: imgur.com">
-
+	<form action="{{ url_for('create_user') }}" method="post">
+		Category: <input name="type" type="text">
+		<br>
+		Amount: <input name="amount" type="text">
+		<br>
+	    <input id="my_submit" type="submit" value="Submit">
+	</form>
 </body>
