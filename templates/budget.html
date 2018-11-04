@@ -52,10 +52,10 @@
 <h1> Welcome {{user.name}}! </h1>
 
   <body>
-	Current balance: ${{user.budget}}
+	Current balance: ${{'%0.2f' % user.budget | float}}
 	<br>
 	<br>
-	<table id="customers">
+	<table>
 		{% if user.transactions is defined %}
 			<tr> 
 				<th>Category</th>
@@ -63,8 +63,8 @@
 			</tr>
 		{% for key, value in user.transactions.items() %}
 		   <tr>
-		        <th> {{ value.type }} </th>
-		        <td> {{ value.amount }} </td>
+		        <th> {{ value.category }} </th>
+		        <td> ${{ value.amount }} </td>
 		   </tr>
 		{% endfor %}
 		{% endif %}
@@ -73,14 +73,15 @@
  
 	<h2> Add Transaction </h2>
 	<form action="{{ url_for('update_user', id = user.user_id)}}" method="post">
-		Amount: $ <input name="amount" type="number" min="0.01" step="0.01"/> <br> <br>
-		Type: <input list="options" type="text"> <br>
+		Amount: $ <input name="amount" type="number" min="0.01" step="0.01"/> <br> 
+		<!-- Type: <input list="options" type="text"> <br>
 		<datalist id="options">
 			<option value="Expenditure">
-			<option value="Deposite">
+			<option value="Deposite"> -->
 		</datalist><br><br>
+		Date: <input name="transaction-date" type="date"> <br> <br>
 		Category: 
-		<input list="categories" name="type">
+		<input list="categories" name="category">
 		<datalist id="categories">
 			<option value="Entertainment">
 			<option value="Food">
