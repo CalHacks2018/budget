@@ -146,6 +146,11 @@ def webhook(id):
 			'category': np.random.choice(categories)
 		}
 
+		curr_budget = float(USERS.child(id).child('remainingBudget').get())
+		curr_budget -= float(transaction['amount'])
+		budget_ref = USERS.child(id).child('remainingBudget')
+		budget_ref.set(curr_budget)
+		
 		print('[INFO] Transaction: ', transaction)
 		ref = USERS.child(id).child('transactions')
 		ref.push(transaction)
